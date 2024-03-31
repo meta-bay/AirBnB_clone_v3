@@ -79,7 +79,7 @@ class TestFileStorage(unittest.TestCase):
     def test_all_no_class(self):
         """Test that all returns all rows when no class is passed"""
         state = {'name': 'state1'}
-        new_state = State(**states)
+        new_state = State(**state)
         models.storage.new(new_state)
         models.storage.save()
         session = models.storage._DBStorage__session
