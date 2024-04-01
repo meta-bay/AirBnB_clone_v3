@@ -1,4 +1,4 @@
-#!/usr.bin/python3
+#!/usr/bin/python3
 """This is the reviews module"""
 
 from flask import Flask, jsonify, request, abort
