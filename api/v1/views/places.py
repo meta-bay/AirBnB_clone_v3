@@ -4,6 +4,8 @@
 from flask import Flask, jsonify, request, abort
 from models import storage
 from models.place import Place
+from models.city import City
+from models.user import User
 from api.v1.views import app_views
 
 
@@ -35,7 +37,7 @@ def delete_place(place_id):
     if place:
         storage.delete(place)
         storage.save()
-        return jsonify({})
+        return jsonify({}), 200
     else:
         abort(404)
 
@@ -44,10 +46,10 @@ def delete_place(place_id):
 def create_place(city_id):
     """Creates a Place"""
     city = storage.get(City, city_id)
-    if request.content_type != 'application/json':
-        abort(400, "Not a JSON")
     if not city:
         abort(404)
+    if request.content_type != 'application/json':
+        abort(400, "Not a JSON")
     if not request.json:
         abort(400, "Not a JSON")
     if 'user_id' not in request.json:
@@ -72,6 +74,8 @@ def update_place(place_id):
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
+    if request.content_type != 'application/json':
+        abort(400, "Not a JSON")
     if not request.json:
         abort(400, "Not a JSON")
     data = request.get_json()
