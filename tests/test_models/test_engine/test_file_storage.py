@@ -114,6 +114,7 @@ class TestFileStorage(unittest.TestCase):
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
 
+
 """     @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
     def test_get(self):
         ''' Test the get method'''
