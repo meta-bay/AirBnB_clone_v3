@@ -75,9 +75,6 @@ class BaseModel:
             del new_dict["_sa_instance_state"]
         # if not include_password and "password" in new_dict:
         #    del new_dict["password"]
-        if save_fs is None:
-            if "password" in new_dict:
-                del new_dict["password"]
         return new_dict
 
     def delete(self):

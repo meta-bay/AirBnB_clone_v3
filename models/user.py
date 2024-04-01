@@ -31,9 +31,3 @@ class User(BaseModel, Base):
         # Hash the password if provided
         # if 'password' in kwargs and kwargs['password'] is not None:
         #   self.set_password(kwargs['password'])
-
-    def __setattr__(self, name, value):
-        """Hashes the password to MD5"""
-        if name == "password":
-            value = md5(value.encode()).hexdigest()
-        super().__setattr__(name, value)
