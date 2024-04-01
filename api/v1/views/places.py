@@ -7,6 +7,8 @@ from models.place import Place
 from models.city import City
 from models.user import User
 from api.v1.views import app_views
+from models.amenity import Amenity
+from models.state import State
 
 
 @app_views.route('/cities/<city_id>/places', strict_slashes=False)
@@ -86,3 +88,47 @@ def update_place(place_id):
             setattr(place, key, value)
     storage.save()
     return jsonify(place.to_dict()), 200
+
+
+@app_views.route('/places_search', methods=['POST'],  strict_slashes=False)
+def places_search():
+    """Search for places based on given criteria"""
+    # Parse the JSON body of the request
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Not a JSON"}), 400
+
+    # Extract the optional keys from the JSON
+    states = data.get('states', [])
+    cities = data.get('cities', [])
+    amenities = data.get('amenities', [])
+
+    # Retrieve all places if JSON body is empty or all keys are empty
+    if not states and not cities and not amenities:
+        places = storage.all(Place).values()
+        return jsonify([place.to_dict() for place in places])
+
+    # Filter places based on states and cities
+    place_ids = set()
+    for state_id in states:
+        state = storage.get(State, state_id)
+        if state:
+            for city in state.cities:
+                place_ids.update(place.id for place in city.places)
+    for city_id in cities:
+        city = storage.get(City, city_id)
+        if city:
+            place_ids.update(place.id for place in city.places)
+
+    # Filter places based on amenities
+    if amenities:
+        for amenity_id in amenities:
+            amenity = storage.get(Amenity, amenity_id)
+            if amenity:
+                place_ids.intersection_update(
+                    place.id for place in place_ids if amenity
+                    in place.amenities)
+
+    # Retrieve the places based on filtered place ids
+    places = [storage.get(Place, place_id).to_dict() for place_id in place_ids]
+    return jsonify(places)
