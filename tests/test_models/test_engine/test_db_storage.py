@@ -113,7 +113,7 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
-        ''' Test the get method'''
+        """ Test the get method """
         storage = models.storage
         storage.reload()
         state = {'name': 'state4'}
@@ -125,7 +125,7 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
-        ''' Test the count method '''
+        """ Test the count method """
         storage = models.storage
         storage.reload()
         state = {'name': 'state5'}
