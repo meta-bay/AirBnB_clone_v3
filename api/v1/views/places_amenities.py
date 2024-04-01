@@ -1,4 +1,4 @@
-#!/usr/binpython3
+#!/usr/bin/python3
 """This is the Place and Amenities module"""
 
 from flask import Flask, jsonify, request, abort
