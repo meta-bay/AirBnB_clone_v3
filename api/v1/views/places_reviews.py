@@ -4,6 +4,8 @@
 from flask import Flask, jsonify, request, abort
 from models import storage
 from models.review import Review
+from models.place import Place
+from models.user import User
 from api.v1.views import app_views
 
 
@@ -38,7 +40,7 @@ def delete_review(review_id):
     if review:
         storage.delete(review)
         storage.save()
-        return jsonify({})
+        return jsonify({}), 200
     else:
         abort(404)
 
@@ -48,10 +50,10 @@ def delete_review(review_id):
 def create_review(place_id):
     """Creates a Review"""
     place = storage.get(Place, place_id)
-    if request.content_type != 'application/json':
-        abort(400, "Not a JSON")
     if not place:
         abort(404)
+    if request.content_type != 'application/json':
+        abort(400, "Not a JSON")
     if not request.json:
         abort(400, "Not a JSON")
     if 'user_id' not in request.json:
@@ -76,6 +78,8 @@ def update_review(review_id):
     review = storage.get(Review, review_id)
     if not review:
         abort(404)
+    if request.content_type != 'application/json':
+        abort(400, "Not a JSON")
     if not request.json:
         abort(400, "Not a JSON")
     data = request.get_json()
