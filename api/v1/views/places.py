@@ -94,11 +94,12 @@ def update_place(place_id):
 def places_search():
     """Search for places based on given criteria"""
     # Parse the JSON body of the request
+    data = request.get_json()
     if request.content_type != 'application/json':
         abort(400, "Not a JSON")
     if not request.json:
         abort(400, "Not a JSON")
-    data = request.get_json()
+    # data = request.get_json()
     if not data:
         return jsonify({"error": "Not a JSON"}), 400
     # if request.content_type != 'application/json':
