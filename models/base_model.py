@@ -43,10 +43,10 @@ class BaseModel:
                 self.updated_at = datetime.utcnow()
             if kwargs.get("id", None) is None:
                 self.id = str(uuid.uuid4())
-            # if kwargs.get("password", None) is not None:
+            if kwargs.get("password", None) is not None:
                 # Hash the password using MD5
-            #   self.password = hashlib.md5(kwargs["password"]
-            #                              .encode()).hexdigest()
+                self.password = hashlib.md5(kwargs["password"]
+                                            .encode()).hexdigest()
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
@@ -73,8 +73,8 @@ class BaseModel:
         new_dict["__class__"] = self.__class__.__name__
         if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]
-        # if not include_password and "password" in new_dict:
-        #   del new_dict["password"]
+        if not include_password and "password" in new_dict:
+            del new_dict["password"]
         return new_dict
 
     def delete(self):
