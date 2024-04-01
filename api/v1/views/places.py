@@ -97,6 +97,10 @@ def places_search():
     data = request.get_json()
     if not data:
         return jsonify({"error": "Not a JSON"}), 400
+    if request.content_type != 'application/json':
+        abort(400, "Not a JSON")
+    if not request.json:
+        abort(400, "Not a JSON")
 
     # Extract the optional keys from the JSON
     states = data.get('states', [])
