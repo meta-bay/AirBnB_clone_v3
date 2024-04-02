@@ -108,9 +108,9 @@ def places_search():
     #    abort(400, "Not a JSON")
 
     # Extract the optional keys from the JSON
-    states = data.get('states')
-    cities = data.get('cities')
-    amenities = data.get('amenities')
+    states = data.get('states', [])
+    cities = data.get('cities', [])
+    amenities = data.get('amenities', [])
 
     # Retrieve all places if JSON body is empty or all keys are empty
     if not states and not cities and not amenities:
